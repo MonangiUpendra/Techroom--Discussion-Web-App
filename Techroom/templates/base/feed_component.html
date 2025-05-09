@@ -1,0 +1,44 @@
+{% for room in rooms %}
+  <div class="roomListRoom">
+    <div class="roomListRoom__header">
+      {% if room.host and room.host.id %}
+  <a href="{% url 'user-profile' room.host.id %}" class="roomListRoom__author">
+{% else %}
+  <a href="#" class="roomListRoom__author">
+{% endif %}
+    <div class="avatar avatar--small active">
+      {% if room.host and room.host.avatar %}
+        <img src="{{ room.host.avatar.url }}" alt="Avatar" />
+      {% else %}
+        <img src="https://randomuser.me/api/portraits/women/11.jpg" alt="Default Avatar" />
+      {% endif %}
+    </div>
+    <span>{{ room.host.username }}</span>
+  </a>
+
+      <div class="roomListRoom__actions">
+        <span>{{ room.created_at|timesince }} ago</span>
+      </div>
+    </div>
+
+    <div class="roomListRoom__content">
+      <a href="{% url 'room' room.id %}">{{ room.name }}</a>
+    </div>
+
+    <div class="roomListRoom__meta">
+      <a class="roomListRoom__joined">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+          <title>user-group</title>
+          <path d="M30.539 20.766c-2.69-1.547-5.75-2.427-8.92-2.662"></path>
+          <path d="M22.539 20.766c-6.295-3.619-14.783-3.619-21.078 0"></path>
+          <path d="M19.502 4.047c0.166-0.017 0.33-0.047 0.498-0.047"></path>
+          <path d="M12 16c3.859 0 7-3.141 7-7s-3.141-7-7-7c-3.859 0-7 3.141-7 7s3.141 7 7 7z"></path>
+        </svg>
+        {{ room.participants.count }} Joined
+      </a>
+      <p class="roomListRoom__topic">{{ room.topic.name }}</p>
+    </div>
+  </div>
+{% empty %}
+  <p>No rooms found.</p>
+{% endfor %}
